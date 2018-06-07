@@ -10,5 +10,5 @@ import os
 es = Elasticsearch()
 #es.reindex
 #es.indices.refresh(index="myindex")
-#es.indices.create(index='myindex')
+es.indices.create(index='myindex')
 #es.indices.delete(index='myindex', ignore=[400, 404])
