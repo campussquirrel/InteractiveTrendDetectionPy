@@ -8,7 +8,7 @@ from elasticsearch import Elasticsearch
 #subprocess.Popen('C:/Users/Noushin/Downloads/elasticsearch-6.2.4/elasticsearch-6.2.4/bin/elasticsearch.bat')
 es = Elasticsearch()
 #es.reindex
-#es.indices.refresh(index="myindex1")
+es.indices.refresh(index="myindex1")
 #es.indices.create(index='myindex6')
 #sys.stdout=open("RESULT.txt","w")
 f = open('RESULT', 'a', encoding='utf-8')
@@ -26,7 +26,9 @@ for dirpath, dirs, files in os.walk("Data/"):
                         continue
                     dataObject=json.loads(line)
                     for item in dataObject:
+                        print(item)
                         print(dataObject[item])
+
                         #if not dataObject[item]:
                         #    print('Not!')
 
@@ -36,12 +38,12 @@ for dirpath, dirs, files in os.walk("Data/"):
 
 f.write(myres['result'])
 f.close()
-print(myres['result'])
+#print(myres['result'])
 
-myres1=es.search(index="myindex1",q='PRYF="2003"')
-print("Got %d Hits:" % myres1['hits']['total'])
-for hit in myres1['hits']['hits']:
+#myres1=es.search(index="myindex1",q='PRYF="2003"')
+#print("Got %d Hits:" % myres1['hits']['total'])
+#for hit in myres1['hits']['hits']:
     #print(hit)
     #print(hit['_source'])
-    print("%(IN.CTY)s %(PRY)s: %(PRYF)s %(TIEN)s" % hit["_source"])
+#    print("%(IN.CTY)s %(PRY)s: %(PRYF)s %(TIEN)s" % hit["_source"])
 #sys.stdout.close()

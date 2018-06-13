@@ -9,6 +9,6 @@ import os
 #subprocess.Popen('C:/Users/Noushin/Downloads/elasticsearch-6.2.4/elasticsearch-6.2.4/bin/elasticsearch.bat')
 es = Elasticsearch()
 #es.reindex
-#es.indices.refresh(index="myindex")
-es.indices.create(index='myindex1')
+#es.indices.refresh(index="myindex1")
+#es.indices.create(index='myindex1')
 #es.indices.delete(index='myindex', ignore=[400, 404])
