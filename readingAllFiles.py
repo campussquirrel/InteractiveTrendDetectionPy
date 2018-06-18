@@ -25,25 +25,32 @@ for dirpath, dirs, files in os.walk("Data/"):
                     if(line.__contains__("{\"index\":{")):
                         continue
                     dataObject=json.loads(line)
-                    for item in dataObject:
-                        print(item)
-                        print(dataObject[item])
 
+                    my_json = {item: dataObject[item] for item, dataObject[item] in dataObject.items() if not "." in item}
+                    for item in my_json:
+                        print(item)
+                        print(my_json[item])
+                    #for item in dataObject:
+                    #    print(item)
+                    #    print(dataObject[item])
                         #if not dataObject[item]:
                         #    print('Not!')
-
-                    myres = es.index(index="myindex1", doc_type='patent', id=i+1, body=line)
+                    if(i>1):
+                        break
+                    myres = es.index(index="myindex1", doc_type='patent', id=i, body=json.dumps(my_json))
                     i=i+1
                     #f.write(line)
 
 f.write(myres['result'])
 f.close()
 #print(myres['result'])
-
-#myres1=es.search(index="myindex1",q='PRYF="2003"')
+#num=0
+#myres1=es.search(index="myindex1",q='PRYF="2003"',size="10000")
 #print("Got %d Hits:" % myres1['hits']['total'])
 #for hit in myres1['hits']['hits']:
+    #num=num+1
     #print(hit)
     #print(hit['_source'])
-#    print("%(IN.CTY)s %(PRY)s: %(PRYF)s %(TIEN)s" % hit["_source"])
+    #print("%(PRY)s: %(PRYF)s %(TIEN)s" % hit["_source"])
 #sys.stdout.close()
+#print(num)
