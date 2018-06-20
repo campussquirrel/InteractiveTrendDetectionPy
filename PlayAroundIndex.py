@@ -6,7 +6,7 @@ from os import listdir
 import subprocess
 from elasticsearch import Elasticsearch
 import os
-#subprocess.Popen('C:/Users/Noushin/Downloads/elasticsearch-6.2.4/elasticsearch-6.2.4/bin/elasticsearch.bat')
+subprocess.Popen('C:/Users/Noushin/Downloads/elasticsearch-6.2.4/elasticsearch-6.2.4/bin/elasticsearch.bat')
 es = Elasticsearch()
 #es.reindex
 #es.indices.refresh(index="myindex1")

@@ -26,7 +26,7 @@ for dirpath, dirs, files in os.walk("Data/"):
                         continue
                     dataObject=json.loads(line)
 
-                    my_json = {item: dataObject[item] for item, dataObject[item] in dataObject.items() if not "." in item}
+                    my_json = {item: dataObject[item] for item, dataObject[item] in dataObject.items() if not "." in item and not "FR" in item and not "DE" in item and not "INA" in item}
                     for item in my_json:
                         print(item)
                         print(my_json[item])
