@@ -26,28 +26,28 @@ for dirpath, dirs, files in os.walk("Data/"):
                     if(line.__contains__("{\"index\":{")):
                         continue
                     dataObject=json.loads(line)
-                    if not dataObject["DETD"]:
+                    if not dataObject["DETD"] and "A2" is dataObject["PK"] and not "A1" is dataObject["PK"]:
                         continue
 
                     my_json = {item: dataObject[item] for item, dataObject[item] in dataObject.items() if not "." in item and not "FR" in item and not "ABDE" in item and not "INA" in item}
                     myres = es.index(index="myindex1", doc_type='patent', id=i, body=json.dumps(my_json))
                     i = i + 1
-                    print("Indexed DETD: {}".format(i))
-                    print(dataObject["DETD"])
+                    #print(my_json["PN"])
 
                    #f.write(line)
 
-
-f.write(myres['result'])
-f.close()
 #print(myres['result'])
-#num=0
+#f.write(myres['result'])
+#f.close()
+
+num=0
 myres1=es.search(index="myindex1",q='PRYF="2003"',size="10000")
 print("Got %d Hits:" % myres1['hits']['total'])
-#for hit in myres1['hits']['hits']:
-    #num=num+1
-    #print(hit)
-    #print(hit['_source'])
-    #print("%(PRY)s: %(PRYF)s %(TIEN)s" % hit["_source"])
+for hit in myres1['hits']['hits']:
+    num=num+1
+    print(hit)
+    print(hit['_source'], file=f)
+    print("%(PRY)s: %(PRYF)s %(TIEN)s" % hit["_source"])
 #sys.stdout.close()
-#print(num)
+f.close()
+print(num)
