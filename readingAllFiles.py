@@ -8,7 +8,7 @@ from elasticsearch import Elasticsearch
 #subprocess.Popen('C:/Users/Noushin/Downloads/elasticsearch-6.2.4/elasticsearch-6.2.4/bin/elasticsearch.bat')
 es = Elasticsearch()
 #es.reindex
-es.indices.refresh(index="myindex1")
+#es.indices.refresh(index="myindex1")
 #es.indices.create(index='myindex6')
 #sys.stdout=open("RESULT.txt","w")
 f = open('RESULT', 'a', encoding='utf-8')
@@ -26,28 +26,28 @@ for dirpath, dirs, files in os.walk("Data/"):
                     if(line.__contains__("{\"index\":{")):
                         continue
                     dataObject=json.loads(line)
-                    if not dataObject["DETD"] and "A2" is dataObject["PK"] and not "A1" is dataObject["PK"]:
+                    if ("A1" != str(dataObject["PK"]) and "A2" != str(dataObject["PK"])) or (not dataObject["DETD"]) or (dataObject["LA"] != "en (English)"):#or int(dataObject["AY"][0]) < 2007:
                         continue
-
+                    if "2003"!= str(dataObject["PRYF"][0]):
+                        print("It was this year: "+dataObject["PRYF"][0])
                     my_json = {item: dataObject[item] for item, dataObject[item] in dataObject.items() if not "." in item and not "FR" in item and not "ABDE" in item and not "INA" in item}
-                    myres = es.index(index="myindex1", doc_type='patent', id=i, body=json.dumps(my_json))
+                    indexed_res = es.index(index="myindex1", doc_type='patent', id=i, body=json.dumps(my_json))
                     i = i + 1
-                    #print(my_json["PN"])
+                    print(my_json["PK"])
 
                    #f.write(line)
-
+print(i)
 #print(myres['result'])
-#f.write(myres['result'])
-#f.close()
+#print(es.indices.get_mapping(index='myindex1', doc_type='patent'))
 
 num=0
-myres1=es.search(index="myindex1",q='PRYF="2003"',size="10000")
-print("Got %d Hits:" % myres1['hits']['total'])
-for hit in myres1['hits']['hits']:
+indexed_res=es.search(index="myindex1",q='PRYF="2003"',size="10000")
+print("Got %d Hits:" % indexed_res['hits']['total'])
+for hit in indexed_res['hits']['hits']:
     num=num+1
-    print(hit)
-    print(hit['_source'], file=f)
-    print("%(PRY)s: %(PRYF)s %(TIEN)s" % hit["_source"])
+    #print(hit)
+    #print(hit['_source'], file=f)
+    #print("%(AY)s: %(PRYF)s %(TIEN)s" % hit["_source"])
 #sys.stdout.close()
 f.close()
 print(num)
